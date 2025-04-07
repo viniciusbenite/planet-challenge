@@ -1,5 +1,7 @@
 package com.planet.reservation.reservation;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/reservations")
+@Tag(name = "Reservations", description = "Reservation management related endpoints")
 public class ReservationController {
   private final ReservationService reservationService;
 
   @PostMapping(value = "/{bookId}/{userId}")
+  @Operation(
+      summary = "Create reservation",
+      description = "Create and returns the created reservation details"
+  )
   public ResponseEntity<ReservationDTO> reserveBook(
       @PathVariable
           @NotNull(message = "Book ID must not be null")
@@ -36,6 +43,10 @@ public class ReservationController {
   }
 
   @GetMapping(value = "/{reservationId}")
+  @Operation(
+      summary = "Get reservation by ID",
+      description = "Returns details of a reservation"
+  )
   public ResponseEntity<ReservationDTO> getReservation(
       @PathVariable
           @NotNull(message = "Reservation ID must not be null")
@@ -48,6 +59,10 @@ public class ReservationController {
   }
 
   @DeleteMapping(value = "/{reservationId}")
+  @Operation(
+      summary = "Cancel/Remove reservation",
+      description = "Remove an reservation from system when cancelled"
+  )
   public ResponseEntity<Void> cancelReservation(
       @PathVariable
           @NotNull(message = "Reservation ID must not be null")
@@ -60,6 +75,10 @@ public class ReservationController {
   }
 
   @PatchMapping("/{reservationId}")
+  @Operation(
+      summary = "Pickup book from reservation",
+      description = "Change reservation status to ACTIVE"
+  )
   public ResponseEntity<ReservationDTO> pickupReservation(
       @PathVariable
           @NotNull(message = "Reservation ID must not be null")
